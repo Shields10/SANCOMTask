@@ -1,9 +1,12 @@
 package com.example.demo.dao;
 
-import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.model.User;
 
-public interface UserDao extends CrudRepository<User, String>{
-
+public interface UserDao extends JpaRepository<User, String>{
+	
+	List <User> findByUserEmail(String userEmail);
 }

@@ -14,6 +14,7 @@
     <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet">
     <link href="assets/libs/parsley/parsley.css" rel="stylesheet">
+    <link href="assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -45,23 +46,23 @@
                 <div id="loginform">
                     <div class="logo">
                         <span class="db"><img src="assets/images/logo-icon.png" alt="logo" /></span>
-                        <h5 class="font-medium m-b-20">Sign In to SANCOM</h5>
+                        <h5 class="font-medium m-b-20">Sign In TO SANCOM JOB PORTAL </h5>
                     </div>
                     <!-- Form -->
                     <div class="row">
                         <div class="col-12">
-                            <form class="form-horizontal m-t-20" id="loginform" action="index.html">
+                            <form class="form-horizontal m-t-20" id="formlogin" action="userLogin" data-parsley-validate="">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="ti-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="email" class="form-control form-control-lg" type="email" required="" id="userEmail" name="userEmail" placeholder="Enter Email" aria-label="Username" aria-describedby="basic-addon1">
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon2"><i class="ti-pencil"></i></span>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                                    <input  class="form-control form-control-lg" type="password" required="" id="password"name="password" placeholder="Password"  aria-label="Password" aria-describedby="basic-addon1">
                                 </div>
                                
                                 <div class="form-group text-center">
@@ -106,13 +107,79 @@
     <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
      <script src="assets/libs/parsley/parsley.min.js"></script>
+      <script src="assets/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <!-- ============================================================== -->
     <!-- This page plugin js -->
     <!-- ============================================================== -->
     <script>
     $('[data-toggle="tooltip"]').tooltip();
     $(".preloader").fadeOut();
-  s
+    
+    $(document).ready(function () {
+
+        $("#formlogin").submit(function (event) {
+
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+
+            fnSubmitForm();
+
+        });
+
+    });
+    
+    
+    function fnSubmitForm(){
+    	
+    	var url="/restapi/login";
+    	var relno="";
+    	  var loginForm = {}
+          loginForm["userEmail"] = $("#userEmail").val();
+          loginForm["password"] = $("#password").val();
+  
+    	var jVariables=JSON.stringify(loginForm);
+    	alert(jVariables);
+    	  $.ajax({
+              beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
+              url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
+              success: function (result) {
+               if (result) {
+                         if(result['error']=='false'){
+                             console.log("no error");
+                           		relno=result.relno;
+                             Swal.fire({
+                             text: "You have successfully Login "+relno,
+                             icon: "success",
+                             type: "success",   
+                             showConfirmButton: true,
+                             confirmButtonText: "Ok",
+                             closeOnConfirm: true,
+                             timer: 1500
+
+                             }).then(function() {
+                            	 window.location.href = 'applyjob.jsp';
+                             });
+
+                               
+                         }else if (result['error']=='incorrect') {
+                             Swal.fire({
+                         text: "Incorrect Login Credentials",
+                         icon: "error",
+                         type:  "error",})
+                         
+                         }else if (result['error']=='userdoesnotexist') {
+                             Swal.fire({
+                                 text: "Sorry User Doesn't Exist",
+                                 icon: "error",
+                                 type:  "error",})
+                           }
+                     } 
+                 }
+             });
+  
+    }
+    
+  
     </script>
 </body>
 

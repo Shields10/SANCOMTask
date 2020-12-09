@@ -14,6 +14,7 @@ public class Applicants {
 	public String userEmail;
 	public String userEducationLevel;
 	public String yearsOfExperience;
+	public String userRelationshioNo;
 	
 	public String getJobId() {
 		return jobId;
@@ -56,6 +57,12 @@ public class Applicants {
 	}
 	public void setYearsOfExperience(String yearsOfExperience) {
 		this.yearsOfExperience = yearsOfExperience;
+	}
+	public String getUserRelationshioNo() {
+		return userRelationshioNo;
+	}
+	public void setUserRelationshioNo(String userRelationshioNo) {
+		this.userRelationshioNo = userRelationshioNo;
 	}
 	
 	

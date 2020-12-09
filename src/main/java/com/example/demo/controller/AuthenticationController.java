@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.User;
-import com.example.demo.utilities.Utilities;
+
 
 @Controller
 public class AuthenticationController {
@@ -26,10 +26,9 @@ public class AuthenticationController {
 	
 	public String registerUser( User  users, 	@RequestParam String password) {
 		try {
+					UUID userRelNo= UUID.randomUUID();
+					users.setUserRelationshipNo(userRelNo.toString());
 					System.out.println("Email"+users.getUserEmail());
-					password=Utilities.encryptString(password);
-					users.setPassword(password);
-
 					usersDao.save(users);
 		
 		} catch (Exception e) {
