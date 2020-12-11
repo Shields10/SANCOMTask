@@ -87,7 +87,7 @@ public class RestWebController {
 		   String password= payload.get("password").toString();
 		   String userEmail= payload.get("userEmail").toString();
 		   String apiKey= payload.get("apikey").toString();
-		   System.out.println("password "+password+"userEmail"+userEmail);
+		   System.out.println("password "+password+"userEmail"+userEmail+"apiKey"+apiKey);
 
 		   if (apiKey.equals(Utilities.getAPIKEY())) {
 		

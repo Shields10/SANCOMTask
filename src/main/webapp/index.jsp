@@ -145,10 +145,10 @@
     	  var loginForm = {}
           loginForm["userEmail"] = $("#userEmail").val();
           loginForm["password"] = $("#password").val();
-          loginForm["pubkey"] = pubkey;
+          loginForm["apikey"] = pubkey;
   
     	var jVariables=JSON.stringify(loginForm);
-    	
+    	alert(jVariables);
     	  $.ajax({
               beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
               url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
@@ -161,7 +161,7 @@
                            		
                            		if(result.details==="notpresent")
 				                             Swal.fire({
-				                             text: "You have successfully Login "+relno,
+				                             text: "You have successfully Login ",
 				                             icon: "success",
 				                             type: "success",   
 				                             showConfirmButton: true,

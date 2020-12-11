@@ -142,7 +142,7 @@
         var password=$("#password1").val();
   
     	var jVariables=JSON.stringify({useremail:useremail,password:password,apikey:pubkey});
-    	alert(jVariables);
+    	
     	  $.ajax({
               beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
               url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
