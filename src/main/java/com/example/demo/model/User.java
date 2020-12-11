@@ -8,9 +8,9 @@ import javax.persistence.Table;
 public class User {
 	@Id
 	public String userRelationshipNo;
-	
 	public String userEmail;
 	public String password;
+	public String salt;
 	
 	
 	public User(){}
@@ -47,6 +47,14 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	
 }

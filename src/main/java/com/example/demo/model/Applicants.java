@@ -7,20 +7,20 @@ import javax.persistence.Id;
 public class Applicants {
 	
 	@Id
-	public String jobId;
+	public String userRelationshipNo;
 	public String userFirstName;
 	public String userLastName;
 	public String userPhoneNumber;
-	public String userEmail;
 	public String userEducationLevel;
 	public String yearsOfExperience;
-	public String userRelationshioNo;
 	
-	public String getJobId() {
-		return jobId;
+	
+	
+	public String getUserRelationshipNo() {
+		return userRelationshipNo;
 	}
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
+	public void setUserRelationshipNo(String userRelationshipNo) {
+		this.userRelationshipNo = userRelationshipNo;
 	}
 	public String getUserFirstName() {
 		return userFirstName;
@@ -40,12 +40,6 @@ public class Applicants {
 	public void setUserPhoneNumber(String userPhoneNumber) {
 		this.userPhoneNumber = userPhoneNumber;
 	}
-	public String getUserEmail() {
-		return userEmail;
-	}
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
 	public String getUserEducationLevel() {
 		return userEducationLevel;
 	}
@@ -58,12 +52,7 @@ public class Applicants {
 	public void setYearsOfExperience(String yearsOfExperience) {
 		this.yearsOfExperience = yearsOfExperience;
 	}
-	public String getUserRelationshioNo() {
-		return userRelationshioNo;
-	}
-	public void setUserRelationshioNo(String userRelationshioNo) {
-		this.userRelationshioNo = userRelationshioNo;
-	}
+	
 	
 	
 	

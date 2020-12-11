@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>SANCOM JOB APPLICATION</title>
+    <title>SANCOM MAINTAIN JOB</title>
     <!-- Custom CSS -->
     <!--link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet"-->
     <link href="dist/css/style.css" rel="stylesheet">
@@ -104,6 +104,8 @@
 									<div class="card card-hover">
 										<div class="card-body">
 											<h4 class="card-title">View Job Present</h4>
+											 <h6 class="card-subtitle">Create New Jobs<button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnaddmodal" data-toggle="modal" data-target="#addModal">Add Jobs</button> </h6>
+											
 											<div id="displaytable" ></div>
 											
 										</div>
@@ -112,10 +114,103 @@
 					
 						</div>
                 
+                
+                	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+									  <div class="modal-dialog" role="document">
+										<div class="modal-content">
+										  <div class="modal-header">
+											<h5 class="modal-title" id="editModalLabel">Add New Job </h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											  <span aria-hidden="true">&times;</span>
+											</button>
+										  </div>
+										  <div class="modal-body">											
+												<div class="col-12">
+													<div class="card">
+														<div class="card-body">
+															<h4 class="card-title">Create Job</h4>
+															  <form  class="form-horizontal m-t-20" id="submitjob" data-parsley-validate="">
+															  
+															   <div class="row pt-3">
+						                                            <div class="col-md-6">
+						                                                <div class="form-group">
+						                                                    <label class="control-label">Job Name</label>
+						                                                    <input type="text" name="jobName" id="jobName" class="form-control" placeholder="Enter First Name" required="">
+						                                                   </div>
+						                                            </div>
+                                            
+							                                            <div class="col-md-6">
+							                                                <div class="form-group has-danger">
+							                                                    <label class="control-label">Job Type</label>
+							                                                    <input type="text" name="jobType" id="jobType" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                  </div>
+							                                            </div>
+                                       							 </div>
+															   <div class="row pt-3">
+						                                            <div class="col-md-4">
+						                                                <div class="form-group">
+						                                                    <label class="control-label">Education Level</label>
+						                                                    <input type="text" name="educationLevel" id="educationLevel" class="form-control" placeholder="Enter First Name" required="">
+						                                                   </div>
+						                                            </div>
+                                            
+							                                            <div class="col-md-4">
+							                                                <div class="form-group has-danger">
+							                                                    <label class="control-label">Year Of Experience Required</label>
+							                                                    <input type="text" name="yearOfExperience" id="yearOfExperience" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                  </div>
+							                                            </div>
+							                                            <div class="col-md-4">
+							                                                <div class="form-group has-danger">
+							                                                    <label class="control-label">Status</label>
+											                                              <select name="status" id="status" required class="form-control">
+																							<option value="" disabled selected>Please select</option>
+																							<option value="active">Yes</option>
+																							<option value="inactive">No</option>
+																						</select>
+							                                                  </div>
+							                                            </div>
+							                                            
+                                       							 </div>
+															   <div class="row pt-3">
+						                                            <div class="col-md-4">
+						                                                <div class="form-group">
+						                                                    <label class="control-label">Interview Date</label>
+						                                                    <input type="date" name="interviewDate" id="interviewDate" class="form-control" placeholder="Enter First Name" required="">
+						                                                   </div>
+						                                            </div>
+                                            
+							                                            <div class="col-md-4">
+							                                                <div class="form-group has-danger">
+							                                                    <label class="control-label">Interview Start Time</label>
+							                                                    <input type="time" name="interviewStartTime" id="interviewStartTime" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                  </div>
+							                                            </div>
+							                                            <div class="col-md-4">
+							                                                <div class="form-group has-danger">
+							                                                    <label class="control-label">Interview End Time</label>
+							                                                    <input type="time" name="interviewEndTime" id="interviewEndTime" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                  </div>
+							                                            </div>
+                                       							 </div>
+											
+																<div class="text-xs-right">
+																	<button class="btn btn-block btn-lg btn-info" type="button" id="btnaddjob" onclick="javascript:fnSubmitJob();return false;"><span>Submit</span></button>								
+																	<button type="reset" class="btn btn-inverse" data-dismiss="modal">Cancel</button>
+																</div>
+																	
+															</form>
+														</div>
+													</div>
+												</div>											
+										  </div>
+										  <div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										  </div>
+										</div>
+									  </div>
+									</div>
                 </div>
-                <form  method="GET" id="getform" >
-            						<input type = "hidden" name = "relno" id = "relno" value="">
-							</form>
                 <!-- Row -->
             </div>
             <!-- ============================================================== -->
@@ -143,10 +238,10 @@
     });
     
     var pubkey=getPubKey();
-    var relno=getUrlVars()["relno"];
     
     function fnLoad(){
     	var listHTML = '';
+   	 
   	  $('#displaytable').html('');
     	
     	var url="/restapi/viewalljobs";
@@ -164,7 +259,7 @@
  			                listHTML+='<thead><tr><th class="numeric-cell">JobID</th><th class="numeric-cell">Job Name</th><th class="label-cell">Job Description</th><th class="label-cell">Year Of Experience</th> <th class="label-cell">Interview Date</th> <th class="label-cell"> Inteview Start Time</th><th class="label-cell"> Inteview End Time</th><th class="label-cell"> Job Type</th><th class="label-cell">Status</th><th class="label-cell">Action</th></thead><tbody>';
  			                
  			                for (var i= 0; i <result.jobId.length;i++) {
- 			                listHTML+='<tr><td class="numeric-cell">'+result.jobId[i]+'</td><td class="numeric-cell">'+result.jobName[i]+'</td><td class="numeric-cell">'+result.jobDescription[i]+'</td><td class="numeric-cell">'+result.yearOfExperience[i]+'</td><td class="numeric-cell">'+result.interviewDate[i]+'</td><td class="numeric-cell">'+result.interviewStartTime[i]+'</td><td class="numeric-cell">'+result.interviewEndTime[i]+'</td><td class="numeric-cell">'+result.jobType[i]+'</td><td class="numeric-cell">'+result.status[i]+'</td><td class="numeric-cell"><button class="btn btn-success" onclick="javascript:fnApply('+result.JobId[i]+')">Apply</button></td></tr>'; 
+ 			                listHTML+='<tr><td class="numeric-cell">'+result.jobId[i]+'</td><td class="numeric-cell">'+result.jobName[i]+'</td><td class="numeric-cell">'+result.jobDescription[i]+'</td><td class="numeric-cell">'+result.yearOfExperience[i]+'</td><td class="numeric-cell">'+result.interviewDate[i]+'</td><td class="numeric-cell">'+result.interviewStartTime[i]+'</td><td class="numeric-cell">'+result.interviewEndTime[i]+'</td><td class="numeric-cell">'+result.jobType[i]+'</td><td class="numeric-cell">'+result.status[i]+'</td><td class="numeric-cell"><button class="btn btn-danger" onclick="javascript:fnDelete('+result.JobId[i]+')">Delete</button></td></tr>'; 
  			                 } 
  			                 listHTML+='</tbody></table>';
 
@@ -173,7 +268,7 @@
                               
                         }else if (result['error']=='nojobs') {
                         	$('#displaytable').html('');
-                        	listHTML='<h4 class="card-title">NO JOB PRESENTS AT THE MOMENT</h4>';
+                        	listHTML='<h4 class="card-title">NO JOB PRESENTS !!!</h4>';
                             $('#displaytable').append(listHTML);
                         }else if (result['statusCode']=='401') {
                               Swal.fire({
@@ -200,12 +295,69 @@
 
     }
     
-    function fnApply(jobid){
-    	var url="/restapi/applyjob";
-    	var jVariables= JSON.stringify({apikey:pubkey,jobid:jobid,relno:relno});
+    
+    function fnSubmitJob(){
+    	
+    	var instance = $('#submitjob').parsley();
+        if(instance.isValid()==false){
+        	
+        	return;
+         }
+    	var url="/restapi/createnewjobs";
+    	var jobDescription=$("#jobDescription").val();
+    	var jobName=$("#jobName").val();
+    	var yearOfExperience=$("#yearOfExperience").val();
+    	var educationLevel=$("#educationLevel").val();
+    	var interviewDate=$("#interviewDate").val();
+    	var interviewStartTime=$("#interviewStartTime").val();
+    	var interviewEndTime=$("#interviewEndTime").val();
+    	var jobType=$("#jobType").val();
+  
+  
+    	var jVariables= JSON.stringify({ jobDescription: jobDescription, jobName:jobName, yearOfExperience:yearOfExperience,
+    		educationLevel:educationLevel, interviewDate:interviewDate, interviewStartTime:interviewStartTime,interviewEndTime:interviewEndTime,
+    		jobType:jobType,status:status,apikey:pubkey});
+    	alert(jVariables);
+    	  $.ajax({
+              beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
+              url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
+              success: function (result) {
+               if (result) {
+                         if(result['statusCode']=='200'){
+                             console.log("no error");
+				                             Swal.fire({
+				                             html: "Job Saved Succefully",
+				                             icon: "success",
+				                             type: "success",   
+				                             showConfirmButton: true,
+				                             confirmButtonText: "Ok",
+				                             closeOnConfirm: true,
+				                             timer: 1500
+				
+				                             }).then(function(){
+				                            	 location.reload();
+				                            	 	
+				                             });
+                           				
+                               
+                         }else if (result['statusCode']=='401') {
+                               Swal.fire({
+                                   text: "Sorry, we are unable to save the job at the moment",
+                                   icon: "error",
+                                   type:  "error",})
+                             }
+                     } 
+                 }
+             });
+  
+    }
+	  
+    function fnDelete(jobid){
+    	var url="/restapi/deletejob";
+    	var jVariables= JSON.stringify({apikey:pubkey,jobid:jobid});
     	
     	Swal.fire({
-            text:'Are you sure you want to apply this job?',
+            text:'Are you sure you want to delete this job?',
             type:"info",		
             showCancelButton: true,
             showCancelButton: true,
@@ -224,7 +376,7 @@
                                 if(result['statusCode']=='200'){
                                     console.log("no error");
        				                             Swal.fire({
-       				                             html: "Job Applied Succefully",
+       				                             html: "Job Deleted Succefully",
        				                             icon: "success",
        				                             type: "success",   
        				                             showConfirmButton: true,
@@ -233,9 +385,8 @@
        				                             timer: 1500
        				
        				                             }).then(function(){
-       				                            	 
-       				                            	 $('#relno').val(relno);
-				                            	 		window.location.href = 'viewappliedjobs.jsp';
+       				                            	 location.reload();
+       				                            	 	
        				                             });
                                   				
                                       
@@ -254,9 +405,6 @@
     	
     	
     }
-
-	  
-	  
 	  
 </script>
 
