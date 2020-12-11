@@ -16,6 +16,7 @@
     <link href="assets/extra-libs/DataTables/datatables.min.css" rel="stylesheet">
     <link href="assets/libs/parsley/parsley.css" rel="stylesheet">
     <link href="assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+     <link href="assets/libs/parsley/parsley.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -104,18 +105,19 @@
 									<div class="card card-hover">
 										<div class="card-body">
 											<h4 class="card-title">View Job Present</h4>
-											 <h6 class="card-subtitle">Create New Jobs<button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnaddmodal" data-toggle="modal" data-target="#addModal">Add Jobs</button> </h6>
+											
+											 <h6 class="card-subtitle">Create New Jobs <br> <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnaddmodal" data-toggle="modal" data-target="#addModal">Add Jobs</button> &nbsp;&nbsp;&nbsp; <button type="button" class="btn waves-effect waves-light  btn-info" onclick="fnViewApplicants()">View Applicants</button> </h6>
 											
 											<div id="displaytable" ></div>
 											
-										</div>
+										
 										
 									</div>
 					
 						</div>
                 
                 
-                	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                	<div class="modal fade bs-example-modal-lg" id="addModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
 									  <div class="modal-dialog" role="document">
 										<div class="modal-content">
 										  <div class="modal-header">
@@ -131,65 +133,82 @@
 															<h4 class="card-title">Create Job</h4>
 															  <form  class="form-horizontal m-t-20" id="submitjob" data-parsley-validate="">
 															  
-															   <div class="row pt-3">
+															   <div class="row">
 						                                            <div class="col-md-6">
 						                                                <div class="form-group">
 						                                                    <label class="control-label">Job Name</label>
-						                                                    <input type="text" name="jobName" id="jobName" class="form-control" placeholder="Enter First Name" required="">
+						                                                    <input type="text" name="jobName" id="jobName" class="form-control" placeholder="Job Name" required="">
 						                                                   </div>
 						                                            </div>
                                             
 							                                            <div class="col-md-6">
 							                                                <div class="form-group has-danger">
 							                                                    <label class="control-label">Job Type</label>
-							                                                    <input type="text" name="jobType" id="jobType" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                    <input type="text" name="jobType" id="jobType" required="" class="form-control form-control-danger" placeholder="Job Type">
 							                                                  </div>
 							                                            </div>
                                        							 </div>
-															   <div class="row pt-3">
-						                                            <div class="col-md-4">
+                                       							    <div class="row">
+						                                            <div class="col-md-12">
 						                                                <div class="form-group">
-						                                                    <label class="control-label">Education Level</label>
-						                                                    <input type="text" name="educationLevel" id="educationLevel" class="form-control" placeholder="Enter First Name" required="">
+						                                                    <label class="control-label">Job Description</label>
+						                                                    <input type="textarea" name="jobDescription" id="jobDescription" class="form-control" placeholder="Job Name" required="">
 						                                                   </div>
 						                                            </div>
+                                       							 </div>
+															   <div class="row ">
+						                                              <div class="col-md-6">
+									                                                <div class="form-group">
+									                                                    <label class="control-label">Education Level</label>
+									                                                    <select class="form-control custom-select" id ="educationLevel" required="" name="educationLevel" data-placeholder="Choose a Category" tabindex="1">
+									                                                         <option value="" disabled selected>Please select</option>
+									                                                        <option value="Post Graduate">Post Graduate</option>
+									                                                        <option value="Graduate">Graduate</option>
+									                                                        <option value="High School">High School</option>
+									                                                    </select>
+									                                                    <small class="form-control-feedback"> Select your Education Level </small>
+									                                                </div>
+									                                            </div>
                                             
-							                                            <div class="col-md-4">
+							                                            <div class="col-md-6">
 							                                                <div class="form-group has-danger">
 							                                                    <label class="control-label">Year Of Experience Required</label>
-							                                                    <input type="text" name="yearOfExperience" id="yearOfExperience" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                    <input type="text" name="yearOfExperience" id="yearOfExperience" required="" class="form-control form-control-danger" placeholder="Year of Experience">
 							                                                  </div>
 							                                            </div>
-							                                            <div class="col-md-4">
+							                                          
+							                                            
+                                       							 </div>
+															   <div class="row ">
+															     <div class="col-md-6">
 							                                                <div class="form-group has-danger">
 							                                                    <label class="control-label">Status</label>
 											                                              <select name="status" id="status" required class="form-control">
 																							<option value="" disabled selected>Please select</option>
-																							<option value="active">Yes</option>
-																							<option value="inactive">No</option>
+																							<option value="active">Active</option>
+																							<option value="inactive">Inactive</option>
 																						</select>
 							                                                  </div>
 							                                            </div>
-							                                            
-                                       							 </div>
-															   <div class="row pt-3">
-						                                            <div class="col-md-4">
+						                                            <div class="col-md-6">
 						                                                <div class="form-group">
 						                                                    <label class="control-label">Interview Date</label>
-						                                                    <input type="date" name="interviewDate" id="interviewDate" class="form-control" placeholder="Enter First Name" required="">
+						                                                    <input type="date" name="interviewDate" id="interviewDate" class="form-control" placeholder="Date" required="">
 						                                                   </div>
-						                                            </div>
-                                            
+						                   	                         </div>
+                                            				</div>
+                                             
+                                            			 <div class="row">
 							                                            <div class="col-md-4">
 							                                                <div class="form-group has-danger">
 							                                                    <label class="control-label">Interview Start Time</label>
-							                                                    <input type="time" name="interviewStartTime" id="interviewStartTime" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                    <input type="time" name="interviewStartTime" id="interviewStartTime" required="" class="form-control form-control-danger" placeholder="Start Time">
 							                                                  </div>
 							                                            </div>
 							                                            <div class="col-md-4">
 							                                                <div class="form-group has-danger">
 							                                                    <label class="control-label">Interview End Time</label>
-							                                                    <input type="time" name="interviewEndTime" id="interviewEndTime" required="" class="form-control form-control-danger" placeholder="Enter Last Name">
+							                                                    <input type="time" name="interviewEndTime" id="interviewEndTime" required="" class="form-control form-control-danger" placeholder="End Time">
 							                                                  </div>
 							                                            </div>
                                        							 </div>
@@ -239,7 +258,7 @@
     
     var pubkey=getPubKey();
     
-    function fnLoad(){
+    function fnOnLoad(){
     	var listHTML = '';
    	 
   	  $('#displaytable').html('');
@@ -252,14 +271,16 @@
              success: function (result) {
               if (result) {
                         if(result['statusCode']=='200'){
+                        
                         	$('#displaytable').html('');
- 			             	console.log("Result is"+result);
+ 			             	console.log("Result is"+result.jobid);
+ 			             
  			                listHTML='<table id="example" class="display compact"style="width: 100%;">';
  			                
  			                listHTML+='<thead><tr><th class="numeric-cell">JobID</th><th class="numeric-cell">Job Name</th><th class="label-cell">Job Description</th><th class="label-cell">Year Of Experience</th> <th class="label-cell">Interview Date</th> <th class="label-cell"> Inteview Start Time</th><th class="label-cell"> Inteview End Time</th><th class="label-cell"> Job Type</th><th class="label-cell">Status</th><th class="label-cell">Action</th></thead><tbody>';
  			                
- 			                for (var i= 0; i <result.jobId.length;i++) {
- 			                listHTML+='<tr><td class="numeric-cell">'+result.jobId[i]+'</td><td class="numeric-cell">'+result.jobName[i]+'</td><td class="numeric-cell">'+result.jobDescription[i]+'</td><td class="numeric-cell">'+result.yearOfExperience[i]+'</td><td class="numeric-cell">'+result.interviewDate[i]+'</td><td class="numeric-cell">'+result.interviewStartTime[i]+'</td><td class="numeric-cell">'+result.interviewEndTime[i]+'</td><td class="numeric-cell">'+result.jobType[i]+'</td><td class="numeric-cell">'+result.status[i]+'</td><td class="numeric-cell"><button class="btn btn-danger" onclick="javascript:fnDelete('+result.JobId[i]+')">Delete</button></td></tr>'; 
+ 			                for (var i= 0; i <result.jobid.length;i++) { 
+ 			                listHTML+='<tr><td class="numeric-cell">'+result.jobid[i]+'</td><td class="numeric-cell">'+result.jobname[i]+'</td><td class="numeric-cell">'+result.jobdescription[i]+'</td><td class="numeric-cell">'+result.yearsofexperience[i]+'</td><td class="numeric-cell">'+result.interviewdate[i]+'</td><td class="numeric-cell">'+result.interviewstarttime[i]+'</td><td class="numeric-cell">'+result.interviewendtime[i]+'</td><td class="numeric-cell">'+result.jobtype[i]+'</td><td class="numeric-cell">'+result.status[i]+'</td><td class="numeric-cell"><button class="btn btn-danger" onclick="fnDelete(\''+result.jobid[i]+'\')">Delete</button></td></tr>'; 
  			                 } 
  			                 listHTML+='</tbody></table>';
 
@@ -312,6 +333,7 @@
     	var interviewStartTime=$("#interviewStartTime").val();
     	var interviewEndTime=$("#interviewEndTime").val();
     	var jobType=$("#jobType").val();
+    	var status=$("#status").val();
   
   
     	var jVariables= JSON.stringify({ jobDescription: jobDescription, jobName:jobName, yearOfExperience:yearOfExperience,
@@ -353,6 +375,7 @@
     }
 	  
     function fnDelete(jobid){
+    	
     	var url="/restapi/deletejob";
     	var jVariables= JSON.stringify({apikey:pubkey,jobid:jobid});
     	
@@ -406,6 +429,11 @@
     	
     }
 	  
+   function fnViewApplicants(){
+	   
+	   window.location.href="viewjobapplicants.jsp"
+   }
+    
 </script>
 
 

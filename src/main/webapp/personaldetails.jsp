@@ -80,6 +80,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                 	<li class="breadcrumb-item"><a href="#">Applicant's  Details</a></li>
+                                	<li class="breadcrumb-item"> <a><i class="fa fa-power-off m-r-5 m-l-5" onclick="fnLogout()"></i> Logout</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Please Input Your Details</li>
                                 </ol>
                             </nav>
@@ -131,7 +132,7 @@
                                               <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Phone Number</label>
-                                                    <input type="number" name="userPhoneNumber" required="" class="form-control" placeholder="Enter Your Phone Number">
+                                                    <input type="number" id="userPhoneNumber" name="userPhoneNumber" required="" class="form-control" placeholder="Enter Your Phone Number">
                                                    </div>
                                             </div>
                                             <!--/span-->
@@ -208,7 +209,7 @@
             event.preventDefault();
 
             fnSubmitForm();
-            $('#registerform').parsley();
+            $('#personaldetails').parsley();
         });
 
     });
@@ -217,7 +218,7 @@
     var relno=getUrlVars()["relno"];
     function fnSubmitForm(){
     	
-    	var instance = $('#registerform').parsley();
+    	var instance = $('#personaldetails').parsley();
         if(instance.isValid()==false){
         	
         	return;
@@ -238,7 +239,7 @@
   
     	var jVariables= JSON.stringify({ userRelationshipNo: userRelationshipNo, userFirstName:userFirstName, userLastName:userLastName,
     		userPhoneNumber:userPhoneNumber, userEducationLevel:userEducationLevel, yearsOfExperience:yearsOfExperience, apikey:pubkey});
-    	alert(jVariables);
+    	
     	  $.ajax({
               beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
               url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
@@ -257,7 +258,8 @@
 				
 				                             }).then(function(){
 				                            	      $('#relno').val(relno);
-				                            	 		window.location.href = 'applyjob.jsp';
+				                            	      $('#getform').attr('action', 'applyjob.jsp'); $( "#getform" ).submit();
+				                            	 		
 				                            	 	
 				                             });
                            				

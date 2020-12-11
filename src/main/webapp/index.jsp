@@ -148,7 +148,7 @@
           loginForm["apikey"] = pubkey;
   
     	var jVariables=JSON.stringify(loginForm);
-    	alert(jVariables);
+    	
     	  $.ajax({
               beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
               url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
@@ -157,9 +157,7 @@
                          if(result['statusCode']=='200'){
                              console.log("no error");
                            		relno=result.relno;
-                           	
-                           		
-                           		if(result.details==="notpresent")
+                          
 				                             Swal.fire({
 				                             text: "You have successfully Login ",
 				                             icon: "success",
@@ -173,9 +171,11 @@
 				                            	 //redirect to different pages
 				                            	  $('#relno').val(relno);
 				                            	 if(result.details==="notpresent"){
-				                            	 			window.location.href = 'personaldetails.jsp';
+				                            		 $('#getform').attr('action', 'personaldetails.jsp'); $( "#getform" ).submit();
+				                            	 			//window.location.href = 'personaldetails.jsp';
 				                            	 	}else if (result.details==="present"){
-				                            	 		window.location.href = 'applyjob.jsp';
+				                            	 		 $('#getform').attr('action', 'applyjob.jsp'); $( "#getform" ).submit();
+				                            	 		//window.location.href = 'applyjob.jsp';
 				                            	 	}
 				                             });
                            				

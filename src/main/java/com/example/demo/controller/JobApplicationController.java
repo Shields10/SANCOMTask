@@ -77,7 +77,29 @@ public class JobApplicationController {
 			String createdOn=Utilities.getCurrentTimeandDate();
 			String applicationId=UUID.randomUUID().toString();
 			
+			
+			
+			
 			if (apiKey.equals(Utilities.getAPIKEY())) {
+				List<ApppliedJobs> getappliedJobs = appliedJobsDao.findByuserRelationshipNo(userRelNo);
+				boolean contains=false;
+				if(getappliedJobs.size()>0) {	
+					int count= getappliedJobs.size();
+					
+					 String []arrJobId =new String [count];						 
+
+					 
+					 for (int i=0;i<count;i++) {
+						 arrJobId[i]=getappliedJobs.get(i).getJobId();
+
+
+					 }
+					  contains = Arrays.stream(arrJobId).anyMatch(jobId::equals);
+					  System.out.println("contains "+contains);
+				}
+				
+				 if (!contains){
+				
 				// Save details to db
 				ApppliedJobs appliedJobs=new ApppliedJobs();
 				appliedJobs.setApplicationId(applicationId);
@@ -87,6 +109,9 @@ public class JobApplicationController {
 				appliedJobsDao.save(appliedJobs);
 				response.put("statusCode", "200");
 
+				 }else {
+					 response.put("error", "jobpplied");
+				 }
 			}else {
 				response.put("statusCode", "401");
 			}
@@ -99,9 +124,9 @@ public class JobApplicationController {
 		return response;
 	}
 	@PostMapping("/restapi/viewappliedjobs")
-	public HashMap<String, String>getAppliedJob(@RequestBody HashMap<String, Object> payload) 
+	public HashMap<String, Object>getAppliedJob(@RequestBody HashMap<String, Object> payload) 
 		    throws Exception {
-		HashMap<String, String> response = new HashMap<>();
+		HashMap<String, Object> response = new HashMap<>();
 		try {
 			
 			
@@ -130,17 +155,15 @@ public class JobApplicationController {
 
 					 }
 					 response.put("statusCode", "200"); 
-					 response.put("jobId", Arrays.toString(arrJobId));
-					 response.put("createdon", Arrays.toString(arrCreatedOn));
-					 response.put("applicationid", Arrays.toString(arrApplicationId));
+					 response.put("jobId", arrJobId);
+					 response.put("createdon", arrCreatedOn);
+					 response.put("applicationid", arrApplicationId);
 
 				}else {
 					response.put("error", "nodata");
 				}
 				
 				
-				response.put("statusCode", "200");
-
 			}else {
 				response.put("statusCode", "401");
 			}

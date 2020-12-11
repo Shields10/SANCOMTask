@@ -75,11 +75,11 @@
              <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-5 align-self-center">
-                        <h4 class="page-title">View and Create Jobs</h4>
+                        <h4 class="page-title">View Available Jobs</h4>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                	<li class="breadcrumb-item"><a href="#"></a>Create New Jobs</li>
+                                	<li class="breadcrumb-item"> <a><i class="fa fa-power-off m-r-5 m-l-5" onclick="fnLogout()"></i> Logout</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">View Jobs</li>
                                 </ol>
                             </nav>
@@ -103,7 +103,11 @@
 								
 									<div class="card card-hover">
 										<div class="card-body">
-											<h4 class="card-title">View Job Present</h4>
+										 <div class="card-header bg-info">
+                              					  <h4 class="mb-0 text-white">View Job Present</h4>
+                              					 
+                            			</div>
+										
 											<div id="displaytable" ></div>
 											
 										</div>
@@ -145,7 +149,7 @@
     var pubkey=getPubKey();
     var relno=getUrlVars()["relno"];
     
-    function fnLoad(){
+    function fnOnLoad(){
     	var listHTML = '';
   	  $('#displaytable').html('');
     	
@@ -163,8 +167,9 @@
  			                
  			                listHTML+='<thead><tr><th class="numeric-cell">JobID</th><th class="numeric-cell">Job Name</th><th class="label-cell">Job Description</th><th class="label-cell">Year Of Experience</th> <th class="label-cell">Interview Date</th> <th class="label-cell"> Inteview Start Time</th><th class="label-cell"> Inteview End Time</th><th class="label-cell"> Job Type</th><th class="label-cell">Status</th><th class="label-cell">Action</th></thead><tbody>';
  			                
- 			                for (var i= 0; i <result.jobId.length;i++) {
- 			                listHTML+='<tr><td class="numeric-cell">'+result.jobId[i]+'</td><td class="numeric-cell">'+result.jobName[i]+'</td><td class="numeric-cell">'+result.jobDescription[i]+'</td><td class="numeric-cell">'+result.yearOfExperience[i]+'</td><td class="numeric-cell">'+result.interviewDate[i]+'</td><td class="numeric-cell">'+result.interviewStartTime[i]+'</td><td class="numeric-cell">'+result.interviewEndTime[i]+'</td><td class="numeric-cell">'+result.jobType[i]+'</td><td class="numeric-cell">'+result.status[i]+'</td><td class="numeric-cell"><button class="btn btn-success" onclick="javascript:fnApply('+result.JobId[i]+')">Apply</button></td></tr>'; 
+ 			                for (var i= 0; i <result.jobid.length;i++) {
+ 			                	  listHTML+='<tr><td class="numeric-cell">'+result.jobid[i]+'</td><td class="numeric-cell">'+result.jobname[i]+'</td><td class="numeric-cell">'+result.jobdescription[i]+'</td><td class="numeric-cell">'+result.yearsofexperience[i]+'</td><td class="numeric-cell">'+result.interviewdate[i]+'</td><td class="numeric-cell">'+result.interviewstarttime[i]+'</td><td class="numeric-cell">'+result.interviewendtime[i]+'</td><td class="numeric-cell">'+result.jobtype[i]+'</td><td class="numeric-cell">'+result.status[i]+'</td><td class="numeric-cell"><button class="btn btn-success" onclick="fnApply(\''+result.jobid[i]+'\')">Apply</button></td></tr>'; 
+  
  			                 } 
  			                 listHTML+='</tbody></table>';
 
@@ -180,7 +185,7 @@
                                   text: "Sorry, we are unable to load jobs at the moment",
                                   icon: "error",
                                   type:  "error",})
-                            }
+                        }
                     } 
                 }
             });
@@ -201,6 +206,7 @@
     }
     
     function fnApply(jobid){
+    	
     	var url="/restapi/applyjob";
     	var jVariables= JSON.stringify({apikey:pubkey,jobid:jobid,relno:relno});
     	
@@ -209,9 +215,9 @@
             type:"info",		
             showCancelButton: true,
             showCancelButton: true,
-            confirmButtonColor: '#FF0000',
+            confirmButtonColor: '#008000',
   	        cancelButtonColor: '#C0C0C0', 
-  	    	  confirmButtonText: 'Delete',
+  	    	  confirmButtonText: 'Apply',
   	        cancelButtonText: 'Cancel', 
   	        closeOnConfirm: true
           }).then((result) => {
@@ -235,7 +241,8 @@
        				                             }).then(function(){
        				                            	 
        				                            	 $('#relno').val(relno);
-				                            	 		window.location.href = 'viewappliedjobs.jsp';
+       				                            	 $('#getform').attr('action', 'viewappliedjobs.jsp'); $( "#getform" ).submit();
+				                            	 		
        				                             });
                                   				
                                       
@@ -244,7 +251,12 @@
                                           text: "Sorry, we are unable to delete the job at the moment",
                                           icon: "error",
                                           type:  "error",})
-                                    }
+                                    }else if (result['error']=='jobpplied') {
+                                        Swal.fire({
+                                            text: "You have already apply for this job",
+                                            icon: "error",
+                                            type:  "error",})
+                                      }
                             } 
                         }
                     });
@@ -255,7 +267,7 @@
     	
     }
 
-	  
+	
 	  
 	  
 </script>

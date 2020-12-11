@@ -114,7 +114,7 @@ public class RestWebController {
 
 						 // Check if user has registered details  
 						 
-						 List<Applicants> applicantDetails = applicantDao.findByuserRelationshipNo(userEmail);
+						 List<Applicants> applicantDetails = applicantDao.findByuserRelationshipNo(relNo);
 						 
 						 if (applicantDetails.size()>0) {
 							 response.put("details", "present");

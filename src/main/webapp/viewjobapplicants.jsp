@@ -75,12 +75,11 @@
              <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-5 align-self-center">
-                        <h4 class="page-title">View Applied Job</h4>
+                        <h4 class="page-title">View Job Applicants</h4>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                	<li class="breadcrumb-item"> <a><i class="fa fa-power-off m-r-5 m-l-5" onclick="fnLogout()"></i> Logout</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">View Applied Job</li>
+                                    <li class="breadcrumb-item active" aria-current="page">View Job Applicants</li>
                                 </ol>
                             </nav>
                         </div>
@@ -103,7 +102,9 @@
 								
 									<div class="card card-hover">
 										<div class="card-body">
-											<h4 class="card-title">View Job Present</h4>
+											 <div class="card-header bg-info">
+                              					  <h4 class="mb-0 text-white">View Applied Jobs</h4>
+                            			</div>
 											<div id="displaytable" ></div>
 											
 										</div>
@@ -139,14 +140,13 @@
 	 
     
     var pubkey=getPubKey();
-    var relno=getUrlVars()["relno"];
     
     function fnOnLoad(){
     	var listHTML = '';
   	  $('#displaytable').html('');
     	
-    	var url="/restapi/viewappliedjobs";
-    	var jVariables= JSON.stringify({apikey:pubkey,relno:relno});
+    	var url="/restapi/viewjobapplicants";
+    	var jVariables= JSON.stringify({apikey:pubkey});
     	 $.ajax({
              beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
              url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
@@ -156,21 +156,21 @@
                         	$('#displaytable').html('');
  			             	console.log("Result is"+result);
  			                listHTML='<table id="example" class="display compact"style="width: 100%;">';
+                                
+ 			                listHTML+='<thead><tr><th class="numeric-cell">JOB Id</th><th class="numeric-cell">Application ID</th><th class="numeric-cell">User Relationship Number</th><th class="label-cell">CreatedOn</th></thead><tbody>';
  			                
- 			                listHTML+='<thead><tr><th class="numeric-cell">Application Id</th><th class="numeric-cell">JobID</th><th class="numeric-cell">Date of Application</th><th class="label-cell">Action</th></thead><tbody>';
- 			                
- 			                for (var i= 0; i <result.applicationid.length;i++) {
- 			                listHTML+='<tr><td class="numeric-cell"><u>'+result.applicationid[i]+'</u></td><td class="numeric-cell">'+result.jobId[i]+'</td><td class="numeric-cell">'+result.createdon[i]+'</td><td class="numeric-cell"><button class="btn btn-danger" onclick="javascript:fnCancel(\''+result.applicationid[i]+'\')">Cancel Job Application</button></td></tr>'; 
+ 			                for (var i= 0; i <result.jobid.length;i++) {
+ 			                listHTML+='<tr><td class="numeric-cell"><u>'+result.jobid[i]+'</u></td><td class="numeric-cell">'+result.applicationid[i]+'</td><td class="numeric-cell">'+result.userrelno[i]+'</td><td class="numeric-cell">'+result.createdon[i]+'</td></td></tr>'; 
  			                 } 
  			                 listHTML+='</tbody></table>';
 
  			                 $('#displaytable').append(listHTML); 
  			                 formTable();	
                               
-                        }else if (result['error']=='nodata') {
+                        }else if (result['error']=='noapplicants') {
                         	console.log("error is"+result['error']);
                         	$('#displaytable').html('');
-                        	listHTML='<h4 class="card-title">NO JOB APPLIED AT THE MOMENT</h4>';
+                        	listHTML='<h4 class="card-title">NO JOB APPLICANTS</h4>';
                             $('#displaytable').append(listHTML);
                         }else if (result['statusCode']=='401') {
                               Swal.fire({
@@ -197,61 +197,7 @@
 
     }
     
-    function fnCancel(applicationid){
-    	var url="/restapi/deselectjob";
-    	var jVariables= JSON.stringify({apikey:pubkey,applicationid,applicationid});
-    	
-    	Swal.fire({
-            text:'Are you sure you want cancel this Job Application?',
-            type:"info",		
-            showCancelButton: true,
-            showCancelButton: true,
-            confirmButtonColor: '#008000',
-  	        cancelButtonColor: '#C0C0C0', 
-  	    	  confirmButtonText: 'Cancel Job',
-  	        cancelButtonText: 'Cancel', 
-  	        closeOnConfirm: true
-          }).then((result) => {
-          	if (result.value) {
-          		 $.ajax({
-                     beforeSend: function(xhr){  xhr.overrideMimeType( "text/plain; charset=x-user-defined" );},// Include this line to specify what Mime type the xhr response is going to be
-                     url: url,  type: "POST", dataType: "json", contentType : "application/json", data:jVariables,
-                     success: function (result) {
-                      if (result) {
-                                if(result['statusCode']=='200'){
-                                    console.log("no error");
-       				                             Swal.fire({
-       				                             html: "You have cancelled the job Application",
-       				                             icon: "success",
-       				                             type: "success",   
-       				                             showConfirmButton: true,
-       				                             confirmButtonText: "Ok",
-       				                             closeOnConfirm: true,
-       				                             timer: 1500
-       				
-       				                             }).then(function(){
-       				                            	 location.reload();
-       				                            	 	
-       				                             });
-                                  				
-                                      
-                                }else if (result['statusCode']=='401') {
-                                      Swal.fire({
-                                          text: "Sorry, we are unable to cancel the job at the moment",
-                                          icon: "error",
-                                          type:  "error",})
-                                    }
-                            } 
-                        }
-                    });
-          		
-          	}
-          }); 
-    	
-    	
-    }
-	  
-	  
+  
 	  
 	  
 </script>

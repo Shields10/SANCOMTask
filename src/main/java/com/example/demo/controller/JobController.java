@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.ApplicantsDao;
+import com.example.demo.dao.AppliedJobsDao;
 import com.example.demo.dao.JobDao;
 import com.example.demo.model.Applicants;
+import com.example.demo.model.ApppliedJobs;
 import com.example.demo.model.Jobs;
 import com.example.demo.utilities.Utilities;
 
@@ -23,6 +26,8 @@ public class JobController {
 	@Autowired
 	JobDao jobDao;
 	
+	@Autowired
+	AppliedJobsDao appliedJobsDao;
 	
 	@PostMapping("/restapi/createnewjobs")
 	public HashMap<String, String>saveApplicantDetails(@RequestBody HashMap<String, Object> payload) 
@@ -72,15 +77,15 @@ public class JobController {
 	}
 	
 	@PostMapping("/restapi/viewalljobs")
-	public HashMap<String, String>viewAllJobs(@RequestBody HashMap<String, Object> payload) 
+	public HashMap<String, Object>viewAllJobs(@RequestBody HashMap<String, Object> payload) 
 		    throws Exception {
-		HashMap<String, String> response = new HashMap<>();
+		HashMap<String, Object> response = new HashMap<>();
 		try {
 			
 			String apiKey= payload.get("apikey").toString();
 			if (apiKey.equals(Utilities.getAPIKEY())) {
 				//Fetch jobs 
-				List<Jobs> job=jobDao.findAll();
+				ArrayList<Jobs> job=(ArrayList<Jobs>) jobDao.findAll();
 				 if (job.size()>0)	{
 					//Get the job details in array format
 					 int count= job.size();
@@ -94,6 +99,7 @@ public class JobController {
 					 String []arrInteviewStartTime =new String [count];						 
 					 String []arrInteviewEndTime =new String [count];						 
 					 String []arrInteviewJobType =new String [count];
+					 String []arrJobDescription =new String [count];
 					 
 					 for (int i=0;i<count;i++) {
 						 arrJobId[i]=job.get(i).getJobId();
@@ -105,18 +111,20 @@ public class JobController {
 						 arrInteviewStartTime[i]=job.get(i).getInterviewStartTime();
 						 arrInteviewEndTime[i]=job.get(i).getInterviewEndTime();
 						 arrInteviewJobType[i]=job.get(i).getJobType();
+						 arrJobDescription[i]=job.get(i).getJobDescription();
 
 					 }
 					 response.put("statusCode", "200"); 
-					 response.put("jobid", Arrays.toString(arrJobId));
-					 response.put("jobname", Arrays.toString(arrJobName));
-					 response.put("yearsofexperience",Arrays.toString(arrYearOfExperience));
-					 response.put("educationlevel", Arrays.toString(arrEducationLevel));
-					 response.put("status", Arrays.toString(arrStatus));
-					 response.put("interviewdate", Arrays.toString(arrInteviewDate));
-					 response.put("interviewstarttime", Arrays.toString(arrInteviewStartTime));
-					 response.put("interviewendtime", Arrays.toString(arrInteviewEndTime));
-					 response.put("jobtype", Arrays.toString(arrInteviewEndTime));
+					 response.put("jobid", arrJobId);
+					 response.put("jobname", arrJobName);
+					 response.put("yearsofexperience",arrYearOfExperience);
+					 response.put("educationlevel", arrEducationLevel);
+					 response.put("status", arrStatus);
+					 response.put("interviewdate",arrInteviewDate);
+					 response.put("interviewstarttime", arrInteviewStartTime);
+					 response.put("interviewendtime", arrInteviewEndTime);
+					 response.put("jobtype", arrInteviewEndTime);
+					 response.put("jobdescription",arrJobDescription);
 					 
 						
 				 }else {
@@ -160,5 +168,59 @@ public class JobController {
 		return response;
 
 	}	
+	
+	@PostMapping("/restapi/viewjobapplicants")
+	public HashMap<String, Object>viewJobApplicants(@RequestBody HashMap<String, Object> payload) 
+		    throws Exception {
+		HashMap<String, Object> response = new HashMap<>();
+		try {
+			
+			String apiKey= payload.get("apikey").toString();
+			if (apiKey.equals(Utilities.getAPIKEY())) {
+				//Fetch Applicants 
+				ArrayList<ApppliedJobs> appliedJobs=(ArrayList<ApppliedJobs>) appliedJobsDao.findAll();
+				 if (appliedJobs.size()>0)	{
+					//Get the job details in array format
+					 int count= appliedJobs.size();
+			
+					 String []arrJobId =new String [count];						 					 
+					 String []arrApplicationId =new String [count];						 
+					 String []arrUserRelationshipNo =new String [count];						 
+					 String []arrcreatedOn =new String [count];						 
+					 for (int i=0;i<count;i++) {
+						 arrJobId[i]=appliedJobs.get(i).getJobId();
+						 arrApplicationId[i]=appliedJobs.get(i).getApplicationId();
+						 arrUserRelationshipNo[i]=appliedJobs.get(i).getUserRelationshipNo();
+						 arrcreatedOn[i]=appliedJobs.get(i).getCreatedOn();
+						 
+
+					 }
+					 response.put("statusCode", "200"); 
+					 response.put("jobid", arrJobId);
+					 response.put("applicationid", arrApplicationId);
+					 response.put("userrelno", arrUserRelationshipNo);
+					 response.put("createdon", arrcreatedOn);
+				
+						
+				 }else {
+					 response.put("error", "noapplicants"); 
+				 }
+				
+			}else {
+				response.put("statusCode", "401");
+			}
+	
+			
+			System.out.println("Response is"+response.toString());
+		}catch (Exception e) {
+			System.out.println("There was an error in  viewing  job "+e.getMessage());
+		}
+	
+	return response;
+	
+	
+	}	
+	
+	
 }	
 	
